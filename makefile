@@ -1,7 +1,9 @@
+CFLAGS = -g -Wall -Wextra 
+
 all:
 	echo "Build the program"
 build:
-	clang cal.c -o cal
+	clang $(CFLAGS) cal.c -o cal
 	./cal
 clean:
 	rm cal
