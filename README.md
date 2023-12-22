@@ -15,3 +15,6 @@ Don't forget to put cal  into bin folder
 ```console
 $ cal
 ```
+#Requirements
+
+clang is required if you want to use gcc you can edit MAKEFILE and use it.
