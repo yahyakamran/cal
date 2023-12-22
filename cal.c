@@ -32,7 +32,7 @@ void printDays(time_t month_number, time_t day, time_t weekday, time_t year) {
   int first_day = findFirstDay(day, weekday);
   int numbers_of_rows =
       ((first_day + days_in_month[(int)month_number]) / 7) + 1;
- int days = 1;
+  int days = 1;
   for (int i = 1; i <= numbers_of_rows; ++i) {
     for (int j = 1; j <= 7; ++j) {
       if (1 == i && 1 == j) {
