@@ -1,30 +1,66 @@
 #include <stdio.h>
 #include <time.h>
-#include <uchar.h>
 
-void printDays(int month_number, time_t day) {
-  printf("Today is %ld of %d th Month\n", day, month_number);
+int findFirstDay(time_t day, time_t weekday) {
+  int days_of_week[] = {1, 2, 3, 4, 5, 6, 7};
+  int day_to_reverse = (day - 1) % 7;
+  int arrLen = sizeof days_of_week / sizeof days_of_week[0];
+  int index = -1;
+  for (int i = 0; i < arrLen; i++) {
+    if (days_of_week[i] == (int)weekday) {
+      index = i;
+      break;
+    }
+  }
+  int selected_day_index;
+  if (index - day_to_reverse < 0) {
+    int temp = index - day_to_reverse;
+    selected_day_index = 6 + temp;
+  } else {
+    selected_day_index = index - day_to_reverse;
+  }
+  return days_of_week[selected_day_index];
 }
 
-void show_calender(time_t day, time_t month, time_t year) {
+void printDays(time_t month_number, time_t day, time_t weekday, time_t year) {
+  int days_in_month[] = {
+      0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
+  };
+  if ((0 == (int)year % 4 && 0 != (int)year % 100) || 0 == (int)year % 400) {
+    int days_in_month[] = {
+        0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31,
+    };
+  }
+  int first_day = findFirstDay(day, weekday);
+  printf("Today is %ld of %ld th Month the weekday is %ld. The total days in "
+         "this month are %d The first day of this month is %d\n",
+         day, month_number, weekday, days_in_month[(int)month_number],
+         first_day);
+  for (int i = 1; i <= 5; ++i) {
+    for (int j = 1; j <= 7; ++j) {
+      printf("0 ");
+    }
+    printf("\n");
+  }
+}
+
+void showCurrentDate(time_t month, time_t year) {
   char *months[] = {"Jan", "Feb", "Mar", "Apr", "May", "Jun",
                     "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
   int month_number = (int)month;
-  printf("\t%ld %s %ld\n", day, *(months + (month_number - 1)), year);
-  printf("Mon Tue Wed Thr Fri Sat Sun\n");
-  printDays(month_number, day);
+  printf("  %s %ld\n", *(months + (month_number - 1)), year);
+  printf("M T W T F S S\n");
 }
 
 int main() {
   time_t t = time(NULL);
   struct tm *timeinfo;
-  time_t day;
-  time_t month;
-  time_t year;
   timeinfo = localtime(&t);
-  day = timeinfo->tm_mday;
-  month = timeinfo->tm_mon + 1;
-  year = timeinfo->tm_year + 1900;
-  show_calender(day, month, year);
+  time_t day = timeinfo->tm_mday;
+  time_t month = timeinfo->tm_mon + 1;
+  time_t year = timeinfo->tm_year + 1900;
+  time_t weekday = timeinfo->tm_wday;
+  showCurrentDate(month, year);
+  printDays(month, day, weekday, year);
   return 0;
 }
