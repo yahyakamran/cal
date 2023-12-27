@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <strings.h>
 #include <time.h>
 
 int findFirstDay(time_t day, time_t weekday) {
@@ -7,8 +8,8 @@ int findFirstDay(time_t day, time_t weekday) {
   int arrLen = sizeof days_of_week / sizeof days_of_week[0];
   int index = -1;
   for (int i = 0; i < arrLen; i++) {
-    if (days_of_week[i] == (int)weekday) {
-      index = i;
+    if (days_of_week[i] == ((int)weekday)){
+      index = i+1;
       break;
     }
   }
